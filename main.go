@@ -7,16 +7,16 @@ import (
 )
 
 const (
-	OPEN   int64 = 1
-	CLOSED int64 = 0
+	OPEN   int32 = 1
+	CLOSED int32 = 0
 )
 
 var Customer int64 = 0
-var Status int64 = 1
+var Status int32 = 1
 
 func Closed() {
 	if Status == OPEN {
-		atomic.AddInt64(&Status, -1)
+		atomic.StoreInt32(&Status, CLOSED)
 	}
 	tk := time.NewTicker(time.Microsecond * 10)
 	defer tk.Stop()
@@ -31,7 +31,7 @@ func Closed() {
 func Opened() {
 	fmt.Println("shop open")
 	if Status == CLOSED {
-		atomic.AddInt64(&Status, 1)
+		atomic.StoreInt32(&Status, OPEN)
 	}
 }
 
